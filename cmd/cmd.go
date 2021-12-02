@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	_ "github.com/aaqaishtyaq/aoc/days/day01"
+	_ "github.com/aaqaishtyaq/aoc/days/day02"
 	"github.com/aaqaishtyaq/aoc/registry"
 )
 

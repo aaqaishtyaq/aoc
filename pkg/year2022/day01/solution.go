@@ -35,7 +35,7 @@ func Solution() error {
 func part01(input []int) int {
 	type maxNum struct{ idx, size int }
 
-	var max = maxNum{}
+	max := maxNum{}
 	for i, cal := range input {
 		if i == 0 {
 			max = maxNum{i, cal}
@@ -62,7 +62,7 @@ func readInput() ([]int, error) {
 
 	inputText := string(data)
 	inputLines := strings.Split(inputText, "\n")
-	var totalCals = []int{}
+	totalCals := []int{}
 
 	total := 0
 	lastIdx := 0

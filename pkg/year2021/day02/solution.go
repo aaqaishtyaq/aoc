@@ -1,37 +1,28 @@
 package day02
 
 import (
+	"embed"
 	"fmt"
-	"io/ioutil"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/aaqaishtyaq/aoc/registry"
-	"github.com/aaqaishtyaq/aoc/utils"
+	"github.com/aaqaishtyaq/aoc/pkg/utils"
 )
 
-func init() {
-	registry.Registry[2] = main
-}
+// go:embed input
+var fs embed.FS
 
 type Line struct {
 	direction string
 	distance  int
 }
 
-func readInput(filename string) []Line {
-	filePath, err := filepath.Abs("../days/day02/" + filename)
+func readInput(filename string) ([]Line, error) {
+	data, err := utils.ReadInputFile(fs)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-
-	data, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		panic(err)
-	}
-
 
 	inputText := string(data)
 	inputLines := strings.Split(inputText, "\n")
@@ -45,22 +36,25 @@ func readInput(filename string) []Line {
 			distance:  distance,
 		}
 	}
-	return lines
+	return lines, nil
 }
 
-func main() {
-	filename := utils.ParseInputFileName()
-	input := readInput(filename)
+func Solution() error {
+	input, err := readInput(utils.InputFile)
+	if err != nil {
+		return err
+	}
 
 	start := time.Now()
 	part1Result := part1(input)
 	part2Result := part2(input)
 	end := time.Since(start)
 
-
 	fmt.Println("Solution for Part 1 : ", part1Result)
 	fmt.Println("Solution for Part 2 : ", part2Result)
 	fmt.Println("Time                : ", end)
+
+	return nil
 }
 
 func part1(lines []Line) int {

@@ -1,50 +1,45 @@
 package day01
 
 import (
+	"embed"
 	"fmt"
-	"io/ioutil"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/aaqaishtyaq/aoc/registry"
-	"github.com/aaqaishtyaq/aoc/utils"
+	"github.com/aaqaishtyaq/aoc/pkg/utils"
 )
 
-func init() {
-	registry.Registry[1] = main
-}
+//go:embed example_input input
+var fs embed.FS
 
-func readInput(filename string) []int {
-	filePath, err := filepath.Abs("../days/day01/" + filename)
+func readInput(filename string) ([]int, error) {
+	data, err := utils.ReadInputFile(fs)
 	if err != nil {
-		panic(err)
-	}
-
-	data, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	inputText := string(data)
 	inputSplit := strings.Split(inputText, "\n")
 	nums := make([]int, len(inputSplit))
 	for i, inputString := range inputSplit {
-		fmt.Printf("")
+		if inputString == "" {
+			break
+		}
 		nums[i], err = strconv.Atoi(inputString)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 	}
 
-	return nums
+	return nums, err
 }
 
-func main() {
-
-	filename := utils.ParseInputFileName()
-	input := readInput(filename)
+func Solution() error {
+	input, err := readInput(utils.InputFile)
+	if err != nil {
+		return err
+	}
 
 	start := time.Now()
 	part1Result := part1(input, 1)
@@ -54,6 +49,7 @@ func main() {
 	fmt.Println("Solution for Part 1 : ", part1Result)
 	fmt.Println("Solution for Part 2 : ", part2Result)
 	fmt.Println("Time                : ", end)
+	return nil
 }
 
 func part1(nums []int, windowSize int) int {
